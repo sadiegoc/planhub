@@ -129,9 +129,16 @@ article.dark form { border-color: var(--black-half); }
 article form { border-color: var(--white-half); }
 
 article.dark fieldset input,
-article.dark fieldset { border-color: var(--black-half); }
+article.dark fieldset,
+article.dark button.btn-google {
+    border-color: var(--black-half);
+}
+
 article fieldset input,
-article fieldset { border-color: var(--white-half); }
+article fieldset,
+article button.btn-google {
+    border-color: var(--white-half);
+}
 
 article {
     width: 100%; height: calc(100vh - var(--header-h) - var(--footer-h));
@@ -204,7 +211,7 @@ fieldset .btn-enter:hover {
 fieldset .btn-google {
     color: #444; font-weight: 600;
     background-color: #fff;
-    border: 1px solid #ccc;
+    border: 1px solid;
 }
 
 .btn-google img {
