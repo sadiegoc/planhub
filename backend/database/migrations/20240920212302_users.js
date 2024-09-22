@@ -1,3 +1,5 @@
+require('dotenv').config()
+
 /**
  * @param { import("knex").Knex } knex
  * @returns { Promise<void> }
@@ -10,8 +12,9 @@ exports.up = function(knex) {
         table.string('username').notNullable().unique()
         table.string('email').notNullable().unique()
         table.string('auth').notNullable()
+        table.string('profile')
         table.string('role')
-        
+
         table.string('googleID')
         table.string('password')
         

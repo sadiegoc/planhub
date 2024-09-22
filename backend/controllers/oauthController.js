@@ -3,6 +3,8 @@ require('dotenv').config()
 const passport = require("passport")
 const jwt = require('jsonwebtoken')
 
+const dayTime = 60 * 60 * 24
+
 module.exports = {
     // chama o login do usuário
     googleAuth: passport.authenticate('google', {
@@ -15,23 +17,38 @@ module.exports = {
 
     // terminada a função de cima, ele chama a callback para gerar o seu token
     callback: (req, res) => {
-        const user = {
-            id: req.user.id,
-            name: req.user.name,
-            username: req.user.username,
-            email: req.user.email,
-            googleID: req.user.googleID
+        const user = req.user ? { ...req.user } : null
+        if (!user) res.redirect(`${process.env.CORS_ORIGIN}/auth?err=email`)
+
+        delete user.password
+        if (user.id && user.username) {
+            const now = Math.floor(Date.now() / 1000)
+            const payload = {
+                ...user,
+                iat: now,
+                exp: now + (dayTime * 2)
+            }
+
+            const token = jwt.sign(payload, process.env.JWT_SECRET)
+
+            res.cookie('auth_token', token, {
+                httpOnly: false, // para ser acessível pelo js do frontend
+                secure: process.env.NODE_ENV === 'production', // false
+                sameSite: 'Lax'
+            })
+
+            res.redirect(`${process.env.CORS_ORIGIN}/dashboard`)
+        } else {
+            const token = jwt.sign(user, process.env.JWT_SECRET, { noTimestamp: true })
+    
+            res.cookie('auth_token', token, {
+                httpOnly: false, // para ser acessível pelo js do frontend
+                secure: process.env.NODE_ENV === 'production', // false
+                sameSite: 'Lax'
+            })
+
+            res.redirect(`${process.env.CORS_ORIGIN}/auth/username`)
         }
-
-        const token = jwt.sign(user, process.env.JWT_SECRET, { expiresIn: '5h' })
-
-        res.cookie('auth_token', token, {
-            httpOnly: false, // para ser acessível pelo js do frontend
-            secure: process.env.NODE_ENV === 'production', // false
-            sameSite: 'Lax'
-        })
-
-        res.redirect(`${process.env.CORS_ORIGIN}/dashboard`)
     },
 
     logout (req, res) {

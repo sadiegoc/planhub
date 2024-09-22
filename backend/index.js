@@ -14,6 +14,8 @@ app.use(session({
     saveUninitialized: true
 }))
 
+app.use('/imgs/profile', express.static('../storage/images/profiles'))
+
 consign()
     .include('./middlewares')
     .then('./models')

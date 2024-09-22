@@ -28,18 +28,20 @@ module.exports = app => {
             clientSecret: process.env.GOOGLE_CLIENT_SECRET
         }, async (accessToken, refreshToken, profile, done) => {
             try {
-                let user = await User.getByGoogleID(profile.id)
+                let user = await User.getByEmail(profile.emails[0].value)
 
                 if (!user) {
-                    const toSave = {
+                    user = {
                         firstName: profile.name.givenName,
                         lastName: profile.name.familyName,
                         email: profile.emails[0].value,
                         googleID: profile.id,
+                        profile: profile.photos[0].value,
                         auth: 'oauth'
                     }
-    
-                    user = await User.save(toSave)
+                } else {
+                    if (user.googleID !== profile.id)
+                        user = null
                 }
 
                 done(null, user)

@@ -16,7 +16,7 @@
                     </router-link>
                 </div>
                 <div class="theme">
-                    <i class="icon theme" @click.prevent="this.$store.state.dark = !this.$store.state.dark">
+                    <i class="icon theme" @click.prevent="toggleTheme">
                         <img v-if="dark" src="@/assets/imgs/icons/sun.png" alt="Light">
                         <img v-else src="@/assets/imgs/icons/moon.png" alt="Dark">
                     </i>
@@ -31,7 +31,12 @@ import { mapState } from 'vuex';
 
 export default {
     name: 'HeaderTemplate',
-    computed: mapState(['dark'])
+    computed: mapState(['dark', 'user']),
+    methods: {
+        toggleTheme () {
+            this.$store.commit('toggleTheme')
+        }
+    }
 }
 </script>
 

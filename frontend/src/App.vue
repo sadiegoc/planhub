@@ -1,5 +1,5 @@
 <template>
-  <div class="content">
+  <div class="content bg-hard" :class="{ dark }">
     <Header></Header>
     <Main></Main>
     <Footer></Footer>
@@ -15,7 +15,7 @@ import Main from './components/templates/Main.vue';
 export default {
   name: 'App',
   components: { Header, Main, Footer },
-  computed: mapState(['user'])
+  computed: mapState(['user', 'dark'])
 }
 </script>
 

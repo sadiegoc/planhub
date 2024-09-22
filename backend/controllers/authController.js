@@ -31,12 +31,10 @@ module.exports = app => {
         // a senha está incorreta
         if (!isMatch) return res.status(401).send('E-mail ou senha estão incorretos!')
 
+        delete user.password
         const now = Math.floor(Date.now() / 1000)
         const payload = {
-            id: user.id,
-            name: user.name,
-            username: user.username,
-            email: user.email,
+            ...user,
             iat: now,
             exp: now + (dayTime * 2)
         }
@@ -57,15 +55,34 @@ module.exports = app => {
             existsOrError(user.lastName, 'Sobrenome não informado!')
             existsOrError(user.username, 'Nome de usuário não informado!')
             existsOrError(user.email, 'E-mail  não informado!')
-            existsOrError(user.password, 'Senha não informado!')
-            existsOrError(user.confirmPassword, 'Confirmação de senha não informado!')
-            equalsOrError(user.password, user.confirmPassword, 'As senhas precisam ser iguais!')
 
-            // verificando se já existe o usuário no banco de dados
-            const userFromDB = await User.getByEmail(user.email)
+            // verificando se já existe o username no banco de dados
+            const userByUsername = await User.getByUsername(user.username)
+            notExistsOrError(userByUsername, 'Este nome de usuário já está em uso!')
 
-            // caso esteja salvando, precisamos nos certificar de que o usuário não existe
-            notExistsOrError(userFromDB, 'Este e-mail já está em uso!')
+            // verificando se já existe o email no banco de dados
+            const userByEmail = await User.getByEmail(user.email)
+            notExistsOrError(userByEmail, 'Este e-mail já está em uso!')
+
+            if (!user.googleID) {
+                existsOrError(user.password, 'Senha não informada!')
+                existsOrError(user.confirmPassword, 'Confirmação de senha não informada!')
+                equalsOrError(user.password, user.confirmPassword, 'As senhas precisam ser iguais!')
+            } else {
+                await User.save(user)
+
+                const now = Math.floor(Date.now() / 1000)
+                const payload = {
+                    ...user,
+                    iat: now,
+                    exp: now + (dayTime * 2)
+                }
+
+                return res.status(200).json({
+                    ...payload,
+                    token: jwt.sign(payload, JWT_SECRET)
+                })
+            }
         } catch (err) {
             return res.status(400).send(err)
         }
@@ -78,7 +95,7 @@ module.exports = app => {
         user.auth = 'jwt'
 
         await User.save(user)
-        res.status(204).send()
+        res.status(200).json(user)
     }
 
     return { login, register }

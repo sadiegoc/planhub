@@ -10,6 +10,10 @@ export default createStore({
     mutations: {
         setUser(state, user) {
             state.user = user
+        },
+        toggleTheme (state) {
+            state.dark = !state.dark
+            localStorage.setItem('dark', state.dark)
         }
     }
 })
