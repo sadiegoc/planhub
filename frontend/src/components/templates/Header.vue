@@ -10,10 +10,16 @@
                 </router-link>
             </div>
             <div class="options">
-                <div class="auth">
+                <div class="auth" v-if="!user">
                     <router-link :to="{ name: 'auth' }">
                         Login / Sign Up
                     </router-link>
+                </div>
+                <div class="user" v-if="user">
+                    <i class="icon profile">
+                        <img v-if="user.profile" :src="user.profile" alt="Profile">
+                        <span v-else>{{ user.firstName[0] }}</span>
+                    </i>
                 </div>
                 <div class="theme">
                     <i class="icon theme" @click.prevent="toggleTheme">
@@ -57,8 +63,24 @@ header {
 }
 
 .logo img { width: 35px; margin-right: 10px; }
-.theme img { width: 17px; height: 17px; }
-.theme i.icon { cursor: pointer; }
+.theme img { width: 24px; height: 24px; }
+.profile img { border-radius: var(--border-r); }
+.user i.icon.profile { padding: 0; margin-right: 5px; }
+.theme, i.icon.profile, .profile img { width: 35px; height: 35px; }
+i.icon.profile span {
+    width: 100%; height: 100%;
+    
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    font-size: 1.5rem;
+    font-style: normal;
+    color: white;
+    
+    background-color: var(--color-theme-1);
+    border-radius: var(--border-r);
+}
 
 .brand a {
     font-weight: 600; font-size: 1.1rem;
@@ -81,8 +103,11 @@ header {
 }
 
 .options a, .options i.icon {
-    padding: 10px;
     border-radius: var(--border-r);
+}
+
+.options a {
+    padding: 10px; margin-right: 5px;
 }
 
 </style>

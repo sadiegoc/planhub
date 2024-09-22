@@ -78,6 +78,7 @@ i.icon {
   justify-content: center;
   align-items: center;
   width: fit-content;
+  cursor: pointer;
 }
 
 

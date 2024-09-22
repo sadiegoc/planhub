@@ -12,7 +12,8 @@ const routes = [
         path: '/',
         alias: '/home',
         name: 'home',
-        component: () => import('@/components/pages/home/Home.vue')
+        component: () => import('@/components/pages/home/Home.vue'),
+        meta: { requiresAuth: false }
     }, {
         path: '/auth',
         name: 'auth',
@@ -44,7 +45,7 @@ router.beforeEach((to, from, next) => {
         user ? next() : next({ name: 'auth' })
     } else if (to.matched.some(record => record.meta.requiresAuth === false)) {
         const user = JSON.parse(json)
-        user ? next({ name: 'home' }) : next()
+        user ? next({ name: 'dashboard' }) : next()
     } else {
         next()
     }

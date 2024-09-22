@@ -1,5 +1,5 @@
 <template>
-    <article id="username">
+    <article id="username" :class="{ dark }">
         <div class="container">
             <form @submit.prevent="submit">
                 <fieldset>
