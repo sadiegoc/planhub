@@ -32,7 +32,8 @@ module.exports = app => {
 
                 if (!user) {
                     const toSave = {
-                        name: profile.displayName,
+                        firstName: profile.name.givenName,
+                        lastName: profile.name.familyName,
                         email: profile.emails[0].value,
                         googleID: profile.id,
                         auth: 'oauth'

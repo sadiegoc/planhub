@@ -18,18 +18,18 @@ module.exports = app => {
 
     // função para fazer login de usuário
     const login = async (req, res) => {
-        if (!req.body.email || !req.body.password) return res.status(400).send('Fields cannot be empty!')
+        if (!req.body.email || !req.body.password) return res.status(400).send('Os campos não podem estar vazios!')
 
         const user = await User.getByEmail(req.body.email)
 
         // usuário não encontrado
-        if (!user) return res.status(400).send('User or password are invalids!')
+        if (!user) return res.status(400).send('E-mail ou senha estão incorretos!')
 
         // compara as senhas
         const isMatch = bcrypt.compareSync(req.body.password, user.password)
 
         // a senha está incorreta
-        if (!isMatch) return res.status(401).send('User or password are invalids!')
+        if (!isMatch) return res.status(401).send('E-mail ou senha estão incorretos!')
 
         const now = Math.floor(Date.now() / 1000)
         const payload = {
@@ -53,18 +53,19 @@ module.exports = app => {
 
         // testes de validação das informações
         try {
-            existsOrError(user.name, 'name not given!')
-            existsOrError(user.username, 'username not given!')
-            existsOrError(user.email, 'E-mail not given!')
-            existsOrError(user.password, 'Password not given!')
-            existsOrError(user.confirmPassword, 'Password confirmation not given!')
-            equalsOrError(user.password, user.confirmPassword, 'Passwords don\'t match!')
+            existsOrError(user.firstName, 'Nome não informado!')
+            existsOrError(user.lastName, 'Sobrenome não informado!')
+            existsOrError(user.username, 'Nome de usuário não informado!')
+            existsOrError(user.email, 'E-mail  não informado!')
+            existsOrError(user.password, 'Senha não informado!')
+            existsOrError(user.confirmPassword, 'Confirmação de senha não informado!')
+            equalsOrError(user.password, user.confirmPassword, 'As senhas precisam ser iguais!')
 
             // verificando se já existe o usuário no banco de dados
             const userFromDB = await User.getByEmail(user.email)
 
             // caso esteja salvando, precisamos nos certificar de que o usuário não existe
-            notExistsOrError(userFromDB, 'This E-mail already exists!')
+            notExistsOrError(userFromDB, 'Este e-mail já está em uso!')
         } catch (err) {
             return res.status(400).send(err)
         }
