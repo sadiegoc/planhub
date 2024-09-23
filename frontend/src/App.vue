@@ -24,13 +24,13 @@ export default {
   --header-h: 60px;
   --footer-h: 120px;
 
-  --black-hard: #151515;
+  --black-hard: #252525;
   --black-half: #303030;
   --black-soft: #454545;
 
   --white-hard: #fcfcfc;
-  --white-half: #dcdcdc;
-  --white-soft: #bcbcbc;
+  --white-half: #ececec;
+  --white-soft: #dcdcdc;
 
   --color-theme-1: #2C5F2D;
   --color-theme-2: #27AE60;

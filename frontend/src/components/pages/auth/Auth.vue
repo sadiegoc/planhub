@@ -125,19 +125,16 @@ export default {
 </script>
 
 <style scoped>
-article.dark form { border-color: var(--black-half); }
-article form { border-color: var(--white-half); }
-
 article.dark fieldset input,
 article.dark fieldset,
 article.dark button.btn-google {
-    border-color: var(--black-half);
+    border-color: var(--black-soft);
 }
 
 article fieldset input,
 article fieldset,
 article button.btn-google {
-    border-color: var(--white-half);
+    border-color: var(--white-soft);
 }
 
 article {
