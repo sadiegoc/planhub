@@ -73,6 +73,10 @@ button {
   border-radius: var(--border-r);
 }
 
+button:active {
+  transform: scale(98%);
+}
+
 i.icon {
   display: flex;
   justify-content: center;

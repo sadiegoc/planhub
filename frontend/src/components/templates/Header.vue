@@ -26,6 +26,7 @@
                             <div class="account">
                                 <i class="icon">
                                     <img v-if="user.profile" :src="user.profile" alt="Profile">
+                                    <span v-else>{{ user.firstName[0] }}</span>
                                 </i>
                                 <div class="data">
                                     <p>{{ user.firstName }} {{ user.lastName }}</p>
@@ -147,11 +148,11 @@ header {
 }
 
 .logo img { width: 35px; margin-right: 10px; }
-.theme img { width: 22px; height: 22px; }
+.theme img { width: 24px; height: 24px; }
 .profile img { border-radius: var(--border-r); }
 .user i.icon.profile { padding: 0; margin-right: 5px; }
-.theme, i.icon.profile, .profile img { width: 28px; height: 28px; }
-i.icon.profile span {
+.theme, i.icon.profile, .profile img { width: 35px; height: 35px; }
+i.icon span {
     width: 100%; height: 100%;
     
     display: flex;

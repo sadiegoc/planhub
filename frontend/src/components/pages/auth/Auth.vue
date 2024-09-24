@@ -191,10 +191,6 @@ fieldset button {
     justify-content: center;
 }
 
-fieldset button:active {
-    transform: scale(98%);
-}
-
 fieldset .btn-enter {
     background-color: var(--color-theme-1);
     color: white;
